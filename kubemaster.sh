@@ -5,7 +5,7 @@ echo "This is Master"
 apt-get update
 apt-get install -y apt-transport-https ca-certificates curl software-properties-common
 
-##############Docker installation
+echo "############## Docker installation "
 curl -fsSL https://download.docker.com/linux/ubuntu/gpg | apt-key add -
 add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
 apt-get -y update && apt-get install -y containerd.io=1.2.10-3 docker-ce=5:19.03.4~3-0~ubuntu-$(lsb_release -cs) \
@@ -27,7 +27,7 @@ systemctl daemon-reload
 systemctl restart docker
 
 
-##############Kubernertes installation
+echo "############## Installing Kubernertes and starting master node"
 curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key add -
 cat <<EOF | sudo tee /etc/apt/sources.list.d/kubernetes.list
 deb https://apt.kubernetes.io/ kubernetes-xenial main
@@ -57,3 +57,4 @@ kubectl apply -f https://docs.projectcalico.org/v3.8/manifests/calico.yaml
 echo "########### Creating join command"
 kubeadm token create --print-join-command > /vagrant/join_command.sh
 chmod +x /vagrant/join_command.sh
+echo "########## Kubernetes master node has been setup"

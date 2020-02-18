@@ -41,6 +41,9 @@ sudo sed -i '/ swap / s/^\(.*\)$/#\1/g' /etc/fstab
 
 #IP of this box
 IP_ADDR=`ifconfig eth1 | grep netmask | awk '{print $2}' | cut -f2 -d:`
+echo "Environment=\"KUBELET_EXTRA_ARGS=--node-ip=$IP_ADDR\"" >> /etc/systemd/system/kubelet.service.d/10-kubeadm.conf
+systemctl daemon-reload
+systemctl restart kubelet
 
 kubeadm init --apiserver-advertise-address=$IP_ADDR --pod-network-cidr=192.168.0.0/16
 
